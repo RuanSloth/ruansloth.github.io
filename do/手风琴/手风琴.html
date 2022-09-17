@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-position: center;
+            background-size: cover;
+        }
+        .content {
+            margin: 0 auto;
+            margin-top: 150px;
+            width: 1000px;
+            height: 500px;
+            display: flex;
+        }
+
+        .content div {
+            width: 100px;
+            background-position: top center;
+            background-size: auto 100%;
+            transition: all .7s;
+        }
+
+        .content div:nth-child(1) {
+            background-image: url(./1.jpg);
+        }
+
+        .content div:nth-child(2) {
+            background-image: url(./2.jpg);
+        }
+
+        .content div:nth-child(3) {
+            background-image: url(./3.jpg);
+        }
+
+        .content div:nth-child(4) {
+            background-image: url(./4.jpg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="back"><a href="../../index.html" style="display: block ;line-height: 25px; text-decoration: none;">返回</a></div>
+    <style>
+        .back{
+            width: 50px;
+            height: 25px;
+            position: absolute;
+            top: 10px;
+            border: 1px solid;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 25px;
+            left: 20px;
+            background-color: antiquewhite;
+        }
+    </style>
+
+    
+    <div class="content">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <script>
+        var getimgs = document.getElementsByTagName('div')
+        // getimgs是HTMLcollections,也是类数组,但不能使用foreach等方法
+        // imgs是NodeList 类数组,但可以使用foreach等方法
+
+        var imgs = document.querySelectorAll('.content div')
+
+        var current = 0
+        grow(0)
+
+        function grow(i) {
+            imgs[i].style.flexGrow = 1
+            document.querySelector('body').style.backgroundImage = 'url('+(i+1)+'.jpg)'
+        }
+        function shrink(i) {
+            imgs[i].style.flexGrow = 0
+        }
+        imgs.forEach(function  (value,index) {
+            value.onclick = function () {
+                if(index === current)
+                    return
+                grow(index)
+                shrink(current)
+                current = index
+            }
+        })
+    </script>
+</body>
+
+</html>

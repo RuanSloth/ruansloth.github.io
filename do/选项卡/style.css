@@ -1,0 +1,49 @@
+a {
+  text-decoration: none;
+  color: #111;
+}
+.contain {
+  width: 540px;
+  margin: 0 auto;
+  padding-top: 120px;
+}
+.contain .tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 28px;
+}
+.contain .tabs .tab {
+  padding: 14px 22px 10px 26px;
+  box-shadow: 3px 3px 5px #bebebe, -3px -3px 5px #ffffff;
+  background: linear-gradient(145deg, #ffffff, #dcdcdc);
+  border-radius: 18px;
+  width: 120px;
+  box-sizing: border-box;
+  text-align: center;
+  cursor: pointer;
+}
+.contain .tabs .active {
+  color: #bdbdbd;
+  cursor: default;
+  background: #f4f4f4;
+  box-shadow: inset 3px 3px 5px #cbcbcb, inset -3px -3px 5px #ffffff;
+}
+.content {
+  min-height: 250px;
+  box-sizing: border-box;
+  padding: 48px;
+  border-radius: 18px;
+  box-shadow: 3px 3px 6px #bebebe, -3px -3px 6px #ffffff;
+}
+.content .card {
+  display: none;
+  font-size: 14px;
+}
+.content .card p {
+  margin-bottom: 12px;
+  color: #a2a2a2;
+}
+.content .active {
+  display: block;
+}
+/*# sourceMappingURL=./style.css.map */

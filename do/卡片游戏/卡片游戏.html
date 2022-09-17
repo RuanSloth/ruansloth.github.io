@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../my-minireset.css" />
+    <style>
+        ul {
+            width: 500px;
+            height: 500px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-content: space-around;
+            background-color: antiquewhite;
+            margin: 0 auto;
+        }
+
+        ul li {
+            background-color: aqua;
+            margin: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            font-size: 30px;
+            border-radius: 10px;
+        }
+
+        ul li i {
+            transition: all .3s;
+            opacity: 0;
+        }
+
+        ul li.success i {
+            opacity: 1;
+        }
+        ul li.open{
+         
+            background-color: rgb(235, 82, 82);
+        }
+        li.success{
+            transition: all .5s;
+            background-color: rgb(184, 210, 80);
+        }
+        ul li.open i {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="back"><a href="../../index.html" style="display: block ;line-height: 25px; text-decoration: none;">返回</a></div>
+    <style>
+        .back{
+            width: 50px;
+            height: 25px;
+            position: absolute;
+            top: 10px;
+            border: 1px solid;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 25px;
+            left: 20px;
+            background-color: antiquewhite;
+        }
+    </style>
+    <ul>
+    </ul>
+    <script>
+        var stage = document.querySelector('ul')
+        var icons = [
+            "fa-bath",
+            "fa-telegram",
+            "fa-anchor",
+            "fa-battery-quarter",
+            "fa-bank",
+            "fa-bug",
+            "fa-bus",
+            "fa-child",
+        ];
+        var level = 0
+        var arr = []
+        //   复制多一份icons,并连接成数组
+        function double() {
+            var temp = icons.concat(icons)
+            // console.log(temp)
+            return temp
+        }
+        //   洗牌函数
+        function refresh(arr) {
+             arr.sort(function () {
+                return  Math.random() - 0.5
+            })
+            return arr
+        }
+        arr = double()
+        arr = refresh(refresh(arr))
+        level = Math.sqrt(arr.length)
+        var width = stage.clientWidth / level - 30 + 'px'
+        var cards = document.getElementsByTagName('li')
+        var success = []
+        var open = null;
+        arr.forEach(function (element, index) {
+            var card = document.createElement('li')
+            var icon = document.createElement('i')
+            icon.classList.add(element)
+            icon.classList.add('fa')
+
+            card.appendChild(icon)
+
+            card.style.width = width
+            card.style.height = '80px'
+            stage.appendChild(card)
+            cards[index].onclick = function () {
+          
+                this.classList.add('open')
+                
+                if (open !== null ) {
+                    if(cards[open].querySelector('i').isSameNode(this.querySelector('i'))){
+                        return
+                    }
+                    setTimeout(function () {
+                        if(open !== null){
+                             // cards[open].isEqualNode(card[index]) 一直为false,应该是因为里面包含了其他元素
+                        if (cards[open].querySelector('i').isEqualNode(cards[index].querySelector('i'))) {
+                            cards[open].classList.add('success')
+                            cards[index].classList.add('success')
+                            cards[index].classList.remove('open')
+                            cards[open].classList.remove('open')
+                            success.push(open,index)
+                            open = null
+                        } else {
+                            cards[index].classList.remove('open')
+                            cards[open].classList.remove('open')
+                            open = null
+                        }
+                        }
+                       
+                    }, 500)
+                } else {
+                    console.log(open)
+                    open = index
+                    console.log(open)
+                }
+             
+            }
+        })
+    </script>
+</body>
+
+</html>

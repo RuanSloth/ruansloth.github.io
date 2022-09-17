@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+
+        }
+
+        .clock {
+            width: 300px;
+            height: 300px;
+            margin-top: 100px;
+            background-color: antiquewhite;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .clock .tail,
+        .clock .pointer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        i {
+            display: block;
+        }
+
+        .clock .tail i {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            /* 修改旋转的基准点,默认是元素左上角 */
+            transform-origin: center 150px;
+            /* 旋转角度 */
+            /* transform: rotate(45deg); */
+        }
+
+        .clock .tail .h {
+            width: 7px;
+            height: 30px;
+            background-color: rgb(23, 59, 59);
+            left: calc(50% - 2px);
+        }
+
+        .clock .tail .m {
+            width: 3px;
+            height: 15px;
+            background-color: rgb(230, 169, 169);
+        }
+
+        .clock .pointer {}
+
+        .clock .pointer .center {
+            position: absolute;
+            top: calc(50% - 5px);
+            left: calc(50% - 3px);
+            width: 6px;
+            height: 6px;
+            background-color: aquamarine;
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        .clock .pointer .hp {
+            position: absolute;
+            top: 100px;
+            left: calc(50% - 4px);
+            width: 8px;
+            height: 80px;
+            transform-origin: center 50px;
+            background-color: rgb(127, 102, 102);
+        }
+
+        .clock .pointer .mp {
+            position: absolute;
+            top: 50px;
+            left: calc(50% - 3px);
+            width: 6px;
+            height: 130px;
+            transform-origin: center 100px;
+            background-color: rgb(164, 97, 97);
+        }
+
+        .clock .pointer .sp {
+            position: absolute;
+            top: 50px;
+            left: calc(50% - 1px);
+            width: 2px;
+            height: 130px;
+            transform-origin: center 100px;
+            background-color: red;
+            transform: rotate();
+        }
+    </style>
+</head>
+
+<body>
+    <div class="back"><a href="../../index.html" style="display: block ;line-height: 25px; text-decoration: none;">返回</a></div>
+    <style>
+        .back{
+            width: 50px;
+            height: 25px;
+            position: absolute;
+            top: 10px;
+            border: 1px solid;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 25px;
+            left: 20px;
+            background-color: antiquewhite;
+        }
+    </style>
+    <div class="clock">
+        <div class="tail">
+            <!-- <i class="h"></i>
+            <i class="m"></i> -->
+        </div>
+        <div class="pointer">
+            <i class="center"></i>
+            <i class="hp"></i>
+            <i class="mp"></i>
+            <i class="sp"></i>
+        </div>
+    </div>
+    <script>
+        var tailEl = document.querySelector('.clock .tail')
+        // 将一个小时分成60份
+        for (let i = 0; i < 60; i++) {
+            // 创建结点
+            var node = document.createElement('i')
+            // 如果是5的倍数,说明得是整点
+            if (i % 5 === 0)
+                node.classList.add('h')
+            else
+                node.classList.add('m')
+                // 360/6 = 60 每一份代表6°,旋转多一份,就加多6°
+            node.style.transform = 'rotate(' + (i * 6) + 'deg)'
+            tailEl.appendChild(node)
+        }
+        var hpEl = document.querySelector('.hp')
+        var mpEl = document.querySelector('.mp')
+        var spEl = document.querySelector('.sp')
+        // 设置指针旋转角度
+        function Time() {
+            // 获得时间
+            var date = new Date()
+            var h = date.getHours()
+            var m = date.getMinutes()
+            var s = date.getSeconds()
+            // 修改秒针
+            show(spEl, 6 * s)
+            // 修改分针 时针
+            show(hpEl, (h + m / 60) * 30)
+            show(mpEl, (m + s / 60) * 6)
+        }
+        // 初始化
+        Time()
+        // 修改某个指针的角度
+        function show(el, i) {
+            el.style.transform = 'rotate(' + i + 'deg)'
+        }
+
+        setInterval(function () {
+           Time()
+        }, 1000)
+    </script>
+</body>
+
+</html>

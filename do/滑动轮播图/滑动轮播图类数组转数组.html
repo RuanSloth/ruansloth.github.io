@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    
+    <div class="back"><a href="../../index.html" style="display: block ;line-height: 25px; text-decoration: none;">返回</a></div>
+    <style>
+        .back{
+            width: 50px;
+            height: 25px;
+            position: absolute;
+            top: 300px;
+            border: 1px solid;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 25px;
+            left: 20px;
+            background-color: antiquewhite;
+        }
+    </style>
+
+
+    <div class="swiper" id="swiper">
+        <div class="list">
+            <img src="./imgs/normal1.jpg" alt="">
+            <img src="./imgs/normal2.jpg" alt="">
+            <img src="./imgs/normal3.jpg" alt="">
+            <img src="./imgs/normal4.jpg" alt="">
+        </div>
+        <ul class="dots">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <div class="lt change">&lt</div>
+        <div class="gt change">&gt</div>
+    </div>
+    <style>
+        .swiper {
+            width: 300px;
+            background-color: red;
+
+            position: relative;
+        }
+
+        .list {
+            position: relative;
+            display: flex;
+            transition: all .5s;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .list img {
+            width: 100%;
+            display: block;
+            transition: all 0.5s;
+        }
+
+        .list img:first-child {
+            /* 由于所有图片脱离了文档流,导致list高度为0,
+            设置高度,后期调整又麻烦,
+            因此让其第一张图片撑起高度 */
+            /* 相对定位不脱离文档流 */
+            position: relative;
+        }
+
+        .dots {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            /* 使用弹性盒子,方便居中 */
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+        }
+
+        .dots li {
+            width: 10px;
+            height: 10px;
+            background-color: aqua;
+            margin: 0 10px;
+            border-radius: 50%;
+            transition: all 0.5s;
+            cursor: pointer;
+        }
+
+        .swiper .lt {
+            left: 0;
+        }
+
+        .swiper .gt {
+            right: 0;
+        }
+
+        .change {
+            font-size: 30px;
+            line-height: 50px;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto 0;
+            height: 50px;
+            width: 30px;
+
+
+            background-color: rgba(79, 142, 142, 0.522);
+            color: #fff;
+            font-weight: bolder;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        var swiperEL = document.getElementById('swiper')
+        // var dotsEL = document.querySelector('.dots')
+        var listEL = swiperEL.getElementsByClassName('list')[0]
+        var imgs = swiperEL.getElementsByTagName('img')
+        // for(let i = 0; )
+        var dots = swiperEL.getElementsByClassName('dots')[0].getElementsByTagName('li')
+
+        var current = 0
+
+        var auto
+        var ltBtn = swiperEL.getElementsByClassName('lt')[0]
+        var gtBtn = swiperEL.getElementsByClassName('gt')[0]
+
+        // 初始化,把图片隐藏起来 显示第一个图片
+        // 对按钮进行低亮,第一个高亮
+        function Init() {
+            for (var i = 0; i < imgs.length; i++) {
+                Slowlight(i)
+            }
+            Highlight(current)
+        }
+        // 更换图片
+        function ShowItem(n) {
+            Highlight(n)
+            Slowlight(current)
+            Move(n)
+            current = n
+        }
+        // 高亮
+        function Highlight(i) {
+
+            dots[i].style.backgroundColor = "red"
+        }
+        // 移动
+        function Move(i) {
+
+            var s = -i * listEL.clientWidth
+            console.log(s, i, current);
+
+            imgs[0].style['margin-left'] = s + 'px'
+        }
+
+
+        // 低亮
+        function Slowlight(i) {
+            dots[i].style.backgroundColor = "orange"
+        }
+
+        // 绑定点击事件 循环监听事件绑定,可以看看集锦,
+        // 使用var失败的原因,需要通过添加属性等办法解决
+        function Bind() {
+            for (var i = 0; i < dots.length; i++) {
+                dots[i].title = i
+                dots[i].onclick = DClick
+            }
+        }
+
+        // 点击函数
+        function DClick() {
+            // string
+            // console.log(typeof this.title);
+            // this 指向函数运行时 这个函数挂载的 对象（this是动态指向）
+            clearInterval(auto)
+            index = Number(this.title)
+            ShowItem(index)
+            autoChange()
+        }
+
+        function ltClick() {
+            clearInterval(auto)
+            ltChange()
+            autoChange()
+        }
+
+        function ltChange() {
+            if (current === 0) {
+                ShowItem(imgs.length - 1)
+            } else {
+                ShowItem(current - 1)
+            }
+        }
+
+        function gtChange() {
+            if (current === imgs.length - 1) {
+                ShowItem(0)
+            } else {
+                ShowItem(current + 1)
+            }
+        }
+
+        function gtClick() {
+            clearInterval(auto)
+            gtChange()
+            autoChange()
+        }
+        ltBtn.onclick = ltClick
+        gtBtn.onclick = gtClick
+        Init()
+        Bind()
+        autoChange()
+        // 自动切换
+        function autoChange() {
+            auto = setInterval(() => {
+                gtChange()
+            }, 2000);
+        }
+
+        // 类数组转数组
+        Array.prototype.slice.call(dots);
+    </script>
+</body>
+
+</html>

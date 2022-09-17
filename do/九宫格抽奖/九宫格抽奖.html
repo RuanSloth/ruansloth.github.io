@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../my-minireset.css" />
+    <style>
+        ul.box {
+            display: flex;
+            width: 350px;
+            height: 350px;
+           
+            margin: 50px auto 0;
+            flex-wrap: wrap;
+            padding: 10px;
+            box-sizing: border-box;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        ul.box li {
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: rgb(22, 186, 236);
+        }
+
+        ul li.start {
+            background-color: rgb(255, 148, 61);
+            cursor: pointer
+        }
+
+        ul.box li.result {
+            background-color: rgb(245, 60, 60);
+        }
+
+        ul li.drawing {
+            background-color: rgb(159, 157, 157)
+        }
+
+        /* 对选项位置进行调整 */
+        ul.box li.opation:nth-of-type(4) {
+            position: relative;
+            left: 220px;
+        }
+
+        ul.box li.opation:nth-of-type(6) {
+            position: relative;
+            top: 110px;
+        }
+
+        ul.box li.opation:nth-of-type(8) {
+            position: relative;
+            right: 110px;
+        }
+
+        ul.box li.opation:nth-of-type(7) {
+            position: relative;
+            left: 110px;
+        }
+
+        ul.box li.opation:nth-of-type(9) {
+            position: relative;
+            right: 220px;
+            bottom: 110px;
+        }
+        p{
+            width: 350px;
+            height: 30px;
+            line-height: 30px;
+            margin: 50px auto 0;
+            text-align: center;
+            box-shadow: rgb(0 0 0 / 30%) 0 0 3px 2px;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="back"><a href="../../index.html" style="display: block ;line-height: 25px; text-decoration: none;">返回</a></div>
+    <style>
+        .back{
+            width: 50px;
+            height: 25px;
+            position: absolute;
+            top: 10px;
+            border: 1px solid;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 25px;
+            left: 20px;
+            background-color: antiquewhite;
+        }
+    </style>
+
+    <p>你会抽到什么?</p>
+    <ul class="box">
+    </ul>
+    <script>
+        var things = ['手机', '平板', '100元购物卡', '谢谢惠顾', '电视', '洗衣机', '空调', '按摩椅']
+        var boxEl = document.querySelector('.box')
+        var opationsEl = boxEl.getElementsByClassName('opation')
+        var pEl = document.querySelector('p')
+        // 开始按钮的索引
+        var start = Math.ceil(things.length / 2)
+        var startEl = null
+        // 是否可以点击开始
+        var isStart = true
+        // 奖项的索引值
+        var result = 0
+        // 正在选中的奖项,初始化为第0个,即第一项
+        var drawIndex = 0
+        // 上一个选中的奖项
+        var preEl
+        // 已经转了的圈数
+        var count = 0
+        // 转动的时间,越大越慢
+        var speed = 200
+        // 定时器
+        var timer = null
+
+        // 抽奖函数
+        function draw() {
+            // 如果选中的索引已超出长度,则重置,并且加1圈
+            if (drawIndex >= opationsEl.length) {
+                drawIndex = 0
+                count++
+            }
+            // 如果不是刚开始抽奖,即存在上一个选中的奖项
+            // 就移除上一索引的选中样式
+            // 踩坑:不能用上一个选中的索引,因为这样当上一个索引为0时,判断为false,即无法移除第一个奖项的样式
+            if (preEl) {
+                preEl.classList.remove('drawing')
+            }
+            
+            opationsEl[drawIndex].classList.add('drawing')
+            preEl = opationsEl[drawIndex]
+            // 调整速度
+            if (count < 3) {
+                speed -= 10
+            }
+            if (count >= 8) {
+                speed += 10
+            }
+            if (speed <= 50) {
+                speed = 50
+            }
+            if (speed >= 1000) {
+                speed = 1000
+            }
+
+            // 如果转够了10圈,并且选中的索引为结果的索引
+            if (count === 10 && drawIndex === result) {
+                setTimeout(function () {
+                    // 清除最后的定时器,重置相关参数,以便再次抽奖
+                    // 不用清除
+                    // clearTimeout(timer)
+                    speed = 100
+                    count = 0
+                    drawIndex = 0
+                    opationsEl[result].classList.add('result')
+                    // 输出到p
+                    if(result !== 3){
+                        pEl.innerText = "恭喜你抽到了"+things[result]+'!!!'
+                    }else{
+                        pEl.innerText = '抱歉,下次再来咯'
+                    }
+                    isStart = true
+                }, 300)
+                return
+            }
+            // 选中的索引+1,即将转到下一个
+            drawIndex++
+            // 清除掉上一个定时器(不用清除)
+            // clearTimeout(timer)
+            // 开启下一个定时器
+            timer = setTimeout(draw, speed)
+
+        }
+
+        things.forEach(function (el, index) {
+            // 如果下标是开始按钮的位置,则加个开始按钮
+            if (index === start) {
+                startEl = document.createElement('li')
+                startEl.innerText = '开始'
+                startEl.classList.add('start')
+                boxEl.appendChild(startEl)
+            }
+            // 添加奖项元素
+            var node = document.createElement('li')
+            node.classList.add('opation')
+            node.innerText = el
+            boxEl.appendChild(node)
+        })
+
+        startEl.onclick = function () {
+            // 如果可以点击的话
+            if (isStart) {
+                isStart = false
+                opationsEl[result].classList.remove('result')
+                // 随机生成结果(可以在这里人为修改)
+                result = Math.floor(Math.random() * things.length);
+                console.log(things[result])
+                draw()
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        main {
+            display: flex;
+            width: 700px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 300px;
+            margin: auto;
+            background-color: rgb(159, 118, 65);
+            justify-content: space-around;
+            align-items: center;
+            border-radius: 20px;
+        }
+
+        main>div {
+            display: flex;
+
+            height: 200px;
+            padding: 50px 10px;
+            box-sizing: border-box;
+          
+        }
+
+        main>div>div {
+            margin-left: 10px;
+           
+            font-size: 70px;
+            background-color: rgba(255, 255, 255, .5);
+            padding: 5px;
+            border-radius: 10px;
+            display: flex;
+            /* 让添加span时,纵向排列 */
+            flex-direction: column;
+            overflow: hidden;
+        }
+        span{
+            width: 100%;
+            height: 100%;
+            transition: all .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="back"><a href="../../index.html" style="display: block ;line-height: 25px; text-decoration: none;">返回</a></div>
+    <style>
+        .back{
+            width: 50px;
+            height: 25px;
+            position: absolute;
+            top: 10px;
+            border: 1px solid;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 25px;
+            left: 20px;
+            background-color: antiquewhite;
+        }
+    </style>
+
+    <main>
+        <div class="day">
+            <div class="s2">
+                <span>0</span>
+            </div>
+            <div class="s1">
+                <span>0</span>
+            </div>
+        </div>
+        <div class="hh">
+            <div class="s2">
+                <span>0</span>
+            </div>
+            <div class="s1">
+                <span>0</span>
+            </div>
+        </div>
+        <div class="mm">
+            <div class="s2">
+                <span>0</span>
+            </div>
+            <div class="s1">
+                <span>0</span>
+            </div>
+        </div>
+        <div class="ss">
+            <div class="s2">
+                <span>0</span>
+            </div>
+            <div class="s1">
+                <span>0</span>
+            </div>
+        </div>
+    </main>
+    <script>
+        function change(el,ss){
+            var firstSpanDom = el.getElementsByTagName("span")[0];
+            // 如果不是这个数字
+            if(firstSpanDom.innerText !== ss){
+                // 创建span结点
+               var spanel = document.createElement('span')
+            //    修改为对应时间
+               spanel.innerText = ss      
+            //    添加该结点
+                 el.appendChild(spanel)
+                //  使得span结点向上滑动
+               firstSpanDom.style.marginTop = '-100px'
+                // .3s完成动画后,移除第一个span
+               setTimeout(function () {
+                console.log(firstSpanDom);
+                
+                el.removeChild(firstSpanDom)
+               },300)
+            }
+        }
+        
+        setInterval(function () {
+            var now = new Date()
+            var date = new Date(2022, 9, 1)
+            // get返回的是数字类型,需要转换,不够两位时,补0
+            // console.log(String(now.getDay()).padStart(2,'0'));
+            // 转为秒
+            var d = parseInt(date - now) / 1000
+            var dd = String(parseInt(d / (60 * 60 * 24))).padStart(2, '0');
+
+            var hh = String(parseInt(d % (60 * 60 * 24) / (60 * 60))).padStart(2, '0');
+            var mm = String(parseInt(d % (60 * 60 * 24) % (60 * 60) / 60)).padStart(2, '0');
+            var ss = String(parseInt(d % (60 * 60 * 24) % (60 * 60) % 60)).padStart(2, '0');
+            console.log(dd,hh,mm,ss);
+            
+            var hhDom = document.querySelector('.hh')
+            var ddDom = document.querySelector('.day')
+            var mmDom = document.querySelector('.mm')
+            var ssDom = document.querySelector('.ss')
+            // 因为dom里的div数组和对应的时间数组都是2位,因此遍历一个时,
+            // 顺便可以遍历另外一个
+            hhDom.querySelectorAll('div').forEach(function (el,i) {
+                change(el,hh[i])
+            })
+            ddDom.querySelectorAll('div').forEach(function (el,i) {
+                change(el,dd[i])
+            })
+            mmDom.querySelectorAll('div').forEach(function (el,i) {
+                change(el,mm[i])
+            })
+            ssDom.querySelectorAll('div').forEach(function (el,i) {
+                change(el,ss[i])
+            })
+        },1000)
+    </script>
+</body>
+
+</html>

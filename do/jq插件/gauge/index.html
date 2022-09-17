@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仪表</title>
+    <script type="text/javascript" src="./js/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/gauge.js"></script>
+</head>
+<body style="background-color:#21304c">
+    <button style="width:100px;height:50px;" onclick="test()">触发</button>
+    <div id="test" style="width:100px;height:100px;">
+    </div>
+	 <div id="test1" style="width:100px;height:100px;"></div>
+    <script type="text/javascript">
+        //仪表标题
+        var title = "螺柱焊合格率";
+        $("#test").lu_word(title);
+        function test() {
+            //目标值
+            var progress = Math.random();
+            //参数1：仪表值<=1
+            //参数2：中间显示的值<=1
+            $("#test").setWord(progress, progress);
+        }
+    </script>
+
+<div class="back"><a href="../../../index.html" style="display: block ;line-height: 25px; text-decoration: none;">返回</a></div>
+<style>
+    .back{
+        width: 50px;
+        height: 25px;
+        position: absolute;
+        bottom: 20px;
+        border: 1px solid;
+        border-radius: 10px;
+        text-align: center;
+        line-height: 25px;
+        left: 20px;
+        background-color: antiquewhite;
+    }
+</body>
+</html>

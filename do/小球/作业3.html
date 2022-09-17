@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 440px;
+            height: 400px;
+            background-color: antiquewhite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .box .car {
+            width: 20px;
+            position: absolute;
+            left: 0px;
+            height: 20px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="back"><a href="../../index.html" style="display: block ;line-height: 25px; text-decoration: none;">返回</a></div>
+    <style>
+        .back{
+            width: 50px;
+            height: 25px;
+            position: relative;
+            
+            border: 1px solid;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 25px;
+            left: 20px;
+            background-color: antiquewhite;
+        }
+    </style>
+
+    <div class="box"> </div>
+    <script>
+        var boxEl = document.querySelector('.box')
+
+        function Car(num, color, xspeed, yspeed) {
+            this.color = color
+            this.xspeed = xspeed
+            this.yspeed = yspeed
+            this.top = num * 50 + 30
+            this.id = '#car' + num
+            this.node = null
+        }
+
+        Car.prototype.move = function () {
+            this.JudgePZ()
+            this.changeA()
+            this.MoveOver()
+            this.node.style.left = (this.node.offsetLeft + this.xspeed) + 'px'
+            this.node.style.top = (this.node.offsetTop + this.yspeed * this.a) + 'px'
+
+        }
+        Car.prototype.JudgePZ = function () {
+            this.JudgePZX()
+            this.JudgePZY()
+        }
+        Car.prototype.MoveOver = function () {
+            // 如果小球底部到下边的距离小于等下要移动的距离,而且是向下掉的时候
+            if (boxEl.offsetHeight - (this.node.offsetTop + this.node.offsetWidth) <
+                Math.abs(this.a * this.yspeed) && this.yspeed > 0) {
+                // 则速度的绝对值就改为剩下的距离
+                console.log(this.yspeed / Math.abs(this.yspeed) * 
+                (boxEl.offsetHeight - this.node.offsetTop - this.node.offsetWidth)) 
+            } 
+        }
+        Car.prototype.JudgePZX = function () {
+            // 如果是碰到了左右两边
+            //   如果小球左偏移量等于盒子的宽度减去小球宽度(即碰到右边)
+            // 如果小球左边距离盒子左边为0,而且x速度为负(即小球在盒子左边边缘,而且小球原本是向左边撞过来的)
+            if (this.node.style.left === (boxEl.offsetWidth - this.node.offsetWidth) + 'px' ||
+                (this.node.offsetLeft === 0 && this.xspeed < 0)) {
+                this.xspeed = -this.xspeed
+            }
+        }
+        Car.prototype.JudgePZY = function () {
+            // 如果小球上边距离盒子上边为0,而且y速度为负(即小球在盒子上边边缘,而且小球原本是向上边撞过来的)
+            if (this.node.offsetTop === 0 && this.yspeed < 0) {
+                this.yspeed = -this.yspeed
+            }
+            // 碰到下边
+            // 小球距离上边缘的距离为盒子高度减去小球高度时,即碰到下边时
+            if (this.node.offsetTop >= boxEl.offsetHeight - this.node.offsetHeight) {
+                this.yspeed = -this.yspeed
+            }
+        }
+        Car.prototype.changeA = function () {
+            // 或者加速度为0,则修改速度方向
+            if (this.a === 0) {
+                this.yspeed = -this.yspeed
+            }
+            // 向下移动,则a增大,向上a减小
+            if (this.yspeed > 0) {
+                this.a = Math.floor((this.a + 0.05) * 100) / 100;
+            } else {
+                this.a = Math.floor((this.a - 0.05) * 100) / 100;
+            }
+
+        }
+        Car.prototype.a = 1.00
+        Car.prototype.init = function () {
+            var el = document.createElement('div')
+            el.id = this.id
+            el.classList.add('car')
+            boxEl.appendChild(el)
+            this.node = el
+            this.node.style.top = this.top + 'px'
+            this.node.style.backgroundColor = this.color
+        }
+        var car1 = new Car(1, 'red', 3, 2)
+        var car2 = new Car(2, 'greenyellow', 3, -5)
+        var car3 = new Car(3, 'blue', 2, 4)
+        car1.init()
+        car2.init()
+        car3.init()
+        setInterval(function () {
+            car1.move()
+            car2.move()
+            car3.move()
+        }, 30)
+    </script>
+</body>
+
+</html>

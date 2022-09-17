@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .date {
+            padding-top: 100px;
+            margin: 0 auto;
+            width: 880px;
+            height: 400px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .date>div {
+            height: 180px;
+            width: 200px;
+            border-radius: 20px;
+            background-color: rgb(176, 170, 159);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .date div div {
+            display: flex;
+            flex-wrap: wrap;
+            width: 90px;
+            padding: 0 10px;
+            align-content: center;
+            justify-content: center;
+        }
+
+        .date div div i {
+            width: 24px;
+            height: 30px;
+          
+            background-color: #fff;
+            transition: all .3s;
+            transform: scale(0.2);
+            opacity: 0;
+        }
+
+        .date div div i.active {
+            transform: scale(1);
+            background-color: black;
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="back"><a href="../../index.html" style="display: block ;line-height: 25px; text-decoration: none;">返回</a></div>
+    <style>
+        .back{
+            width: 50px;
+            height: 25px;
+            position: absolute;
+            top: 10px;
+            border: 1px solid;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 25px;
+            left: 20px;
+            background-color: antiquewhite;
+        }
+    </style>
+    <div class="date">
+
+        <div class="hh">
+            <div>
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div>
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+        </div>
+        <div class="mm">
+            <div>
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div>
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+        </div>
+        <div class="ss">
+            <div>
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div>
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+        </div>
+    </div>
+    <script>
+        var nums = [
+            [
+                [1, 1, 1],
+                [1, 0, 1],
+                [1, 0, 1],
+                [1, 0, 1],
+                [1, 1, 1],
+            ],
+            [
+                [1, 1, 0],
+                [0, 1, 0],
+                [0, 1, 0],
+                [0, 1, 0],
+                [1, 1, 1],
+            ],
+            [
+                [1, 1, 1],
+                [0, 0, 1],
+                [1, 1, 1],
+                [1, 0, 0],
+                [1, 1, 1],
+            ],
+            [
+                [1, 1, 1],
+                [0, 0, 1],
+                [1, 1, 1],
+                [0, 0, 1],
+                [1, 1, 1],
+            ],
+            [
+                [1, 0, 1],
+                [1, 0, 1],
+                [1, 1, 1],
+                [0, 0, 1],
+                [0, 0, 1],
+            ],
+            [
+                [1, 1, 1],
+                [1, 0, 0],
+                [1, 1, 1],
+                [0, 0, 1],
+                [1, 1, 1],
+            ],
+            [
+                [1, 1, 1],
+                [1, 0, 0],
+                [1, 1, 1],
+                [1, 0, 1],
+                [1, 1, 1],
+            ],
+            [
+                [1, 1, 1],
+                [0, 0, 1],
+                [0, 0, 1],
+                [0, 0, 1],
+                [0, 0, 1],
+            ],
+            [
+                [1, 1, 1],
+                [1, 0, 1],
+                [1, 1, 1],
+                [1, 0, 1],
+                [1, 1, 1],
+            ],
+            [
+                [1, 1, 1],
+                [1, 0, 1],
+                [1, 1, 1],
+                [0, 0, 1],
+                [0, 0, 1],
+            ],
+        ]
+
+        var clock = document.querySelectorAll('.date>div>div')
+
+        function showNum(el, n) {
+            // el [15] 传入的一个大数字块,n为需要设置的数字索引
+            // 遍历数字,找到最小块对应的值
+            nums[n].forEach(function (row, ri) {
+                // ri 0-4
+                row.forEach(function (column, ci) {
+                    // 如果最小块值为1
+                    // ci 0-2
+                    if (column) {
+                        // 对应的大数字块里的块就添加样式
+                        el[ri * 3 + ci].classList.add('active')
+                    } else {
+                        el[ri * 3 + ci].classList.remove('active')
+
+                    }
+                })
+            })
+        }
+
+        function show() {
+            var date = new Date()
+            var n = []
+            n[0] = parseInt(date.getHours() / 10)
+            n[1] = date.getHours() % 10
+            n[2] = parseInt(date.getMinutes() / 10)
+            n[3] = date.getMinutes() % 10
+            n[4] = parseInt(date.getSeconds() / 10)
+            n[5] = date.getSeconds() % 10
+            // console.log(n)
+            // console.log(clock)
+            // clock是6个要展示的数字
+            clock.forEach(function (e, i) {
+                // i 0-5 展示的数字
+                // console.log(i)
+                // 找到每个展示数字的格子数组
+                var el = e.querySelectorAll('i')
+                // console.log(el)
+                showNum(el, n[i])
+            }) 
+        }
+        show()
+        setInterval(function () {
+            show()
+        }, 1000)
+    </script>
+</body>
+
+</html>

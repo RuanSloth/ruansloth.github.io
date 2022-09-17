@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="../my-minireset.css">
+</head>
+<body>
+  <div class="back"><a href="../../index.html" style="display: block ;line-height: 25px; text-decoration: none;">返回</a></div>
+  <style>
+      .back{
+          width: 50px;
+          height: 25px;
+          position: absolute;
+          bottom: 20px;
+          border: 1px solid;
+          border-radius: 10px;
+          text-align: center;
+          line-height: 25px;
+          left: 20px;
+          background-color: antiquewhite;
+      }
+ 
+      li{
+        margin: 10px;
+        text-align: center;
+        border: 1px solid;
+        text-align: center;
+        line-height: 25px;
+        background-color: antiquewhite;
+      }
+  </style>
+
+    <ul class="head">
+        <li>aaa</li>
+        <li>bbb</li>
+        <li>ccc</li>
+      </ul>
+  
+      <ul class="tabs">
+        <li>aaa content</li>
+        <li>bbb content</li>
+        <li>ccc content</li>
+      </ul>
+      <style>
+        .active {
+          color: red;
+        }
+      </style>
+      <script>
+        // eq(n)返回其中的第n个元素
+        $('.tabs li').hide().eq(0).show()
+        $('.head li').click(function () {
+            $(this).addClass('active')
+    
+            // siblings返回同级元素
+            $(this).siblings().removeClass('active')
+            $('.tabs li').hide().eq($(this).index()).show()
+        })
+
+        // []  get() 都可以转化为dom对象,作用相同
+        console.log($('.tabs li')[0],$('.tabs li').get(0))
+ 
+      </script>
+
+</body>
+</html>
