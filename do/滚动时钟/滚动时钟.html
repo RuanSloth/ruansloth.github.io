@@ -73,6 +73,7 @@
         }
     </style>
 
+    <p style="text-align: center;">距离2022年12月1日还有:</p>
     <main>
         <div class="day">
             <div class="s2">
@@ -131,7 +132,8 @@
         
         setInterval(function () {
             var now = new Date()
-            var date = new Date(2022, 9, 1)
+            var date = new Date(2022, 11, 1)
+            // 这里实际上是11是12月
             // get返回的是数字类型,需要转换,不够两位时,补0
             // console.log(String(now.getDay()).padStart(2,'0'));
             // 转为秒

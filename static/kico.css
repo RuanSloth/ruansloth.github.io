@@ -1350,7 +1350,7 @@ iframe{
 /* - 图片放大 */
 img[bk-image=active]{
     cursor: pointer;
-    cursor: zoom-in;
+   
 }
 
 .bk-image{
