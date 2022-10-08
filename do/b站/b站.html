@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Document</title>
+
+	<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<style>
+		.pic {
+			width: 160px;
+			height: 100px;
+			border-radius: 4px;
+			overflow: hidden;
+			position: relative;
+			cursor: pointer;
+		}
+
+		.pic .img {
+			width: 100%;
+			height: 100%;
+			background-image: url(./eee63cd.webp);
+			background-size: cover;
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 5;
+		}
+
+		.pic .preview {
+			opacity: 0;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+
+		}
+
+		.pic .preview .cover {
+			position: absolute;
+			left: 0;
+			top: 7px;
+			height: 98px;
+			width: 100%;
+			margin-top: 2px;
+		}
+
+		.pic .preview .process-bar {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 10px;
+			border-color: #000;
+			border-style: solid;
+			border-width: 4px 8px;
+			background: #444;
+			box-sizing: border-box;
+		}
+
+		.pic .preview .process-bar span {
+			height: 2px;
+			display: block;
+			background: #fff;
+		}
+
+		.pic .danmas {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			opacity: 0;
+			transition: all .3s;
+
+		}
+
+		.pic .danmas p {
+			margin: 0;
+			margin-top: 1px;
+		}
+
+		.pic .danmas .dm {
+			position: absolute;
+			color: #fff;
+			white-space: pre;
+			display: inline-block;
+			text-shadow: 1px 1px 2px #001;
+			font-size: 12px;
+		}
+
+		.pic span.time {
+			opacity: 0;
+			position: absolute;
+
+			bottom: 2px;
+			left: 6px;
+			color: #fff;
+			height: 12px;
+			line-height: 12px;
+			padding: 0 5px 1px 0;
+			transition: all .3s;
+		}
+
+		.pic .mask {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			background-color: rgba(0, 0, 0, .3);
+			opacity: 0;
+			z-index: 6;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="pic">
+		<div class="img">
+		</div>
+		<div class="preview">
+			<div class="cover"></div>
+			<div class="process-bar"><span></span></div>
+		</div>
+		<div class="danmas">
+		</div>
+		<div class="mask"></div>
+		<span class="time">
+
+		</span>
+	</div>
+	<script>
+		// https://www.bilibili.com/anime/?spm_id_from=333.1007.0.0
+		var pvideo = {
+			duration: 1303,
+			img_x_len: 10,
+			img_y_len: 10,
+			img_x_size: 480,
+			img_y_size: 270,
+			image: [
+				"//bimp.hdslb.com/videoshotpvhdboss/486142478_dc4dcb-0001.jpg",
+				"//bimp.hdslb.com/videoshotpvhdboss/486142478_dc4dcb-0002.jpg",
+			],
+			index: [
+				0, 0, 8, 14, 20, 25, 31, 39, 50, 61, 67, 73, 80, 87, 93, 104, 116, 126, 132, 138, 144, 152, 159, 170,
+				177,
+				186, 196, 207, 215, 224, 231, 238, 244, 249, 255, 260, 265, 271, 278, 283, 290, 297, 303, 311, 319,
+				330,
+				335,
+				350, 360, 365, 372, 383, 390, 401, 406, 411, 421, 428, 434, 444, 450, 457, 467, 472, 481, 487, 497,
+				502,
+				514,
+				520, 534, 542, 547, 555, 562, 568, 575, 581, 587, 592, 598, 605, 610, 615, 621, 633, 642, 650, 658,
+				668,
+				677,
+				690, 696, 702, 709, 715, 720, 733, 740, 746, 751, 759, 767, 776, 782, 790, 798, 804, 814, 826, 833,
+				840,
+				850,
+				856, 863, 872, 878, 886, 896, 903, 911, 918, 929, 937, 948, 953, 959, 965, 973, 979, 985, 994, 1001,
+				1015,
+				1022, 1028, 1034, 1040, 1047, 1059, 1064, 1071, 1077, 1084, 1090, 1099, 1105, 1111, 1121, 1130, 1139,
+				1150,
+				1156, 1162, 1171, 1178, 1184, 1191, 1197, 1203, 1210, 1216, 1221, 1228, 1233, 1242, 1250, 1260, 1272,
+				1282,
+				1292, 1297,
+				     
+			],
+		};
+		var dm = [
+			"章鱼哥还是没有胜过强风暴雨(doge)",
+			"日本裁判",
+			"日本裁判",
+			"海绵宝宝笑死我了",
+			"黑人小哥",
+			"堡垒之夜",
+			"最喜欢的一集",
+			"最喜欢的一集",
+			"喜欢",
+			"我怎么觉得派大星这个配音我在神奇宝贝里听过",
+			"我看见你了",
+			"但凡章鱼哥早点回去都不至于这样",
+			"这……这我还真有可能“模仿”",
+			"为什么非要执着于台配或者央配呢",
+			"派总依旧稳定输出",
+			"包租公～",
+			"为什么台配的海绵宝宝跟低能儿似的",
+			"井字游戏，其实可以先手必胜的",
+			"我小时候就看的台配",
+			"终于找到了",
+		];
+
+		var time = Math.floor(pvideo.duration / 60) + ':' + pvideo.duration % 60
+		var coverEl = $('.pic .preview .cover')
+		var processBar = $('.pic .preview .process-bar span')
+		var danmasEl = $('.pic .danmas')
+		var first = true
+		var tiemr1, tiemr2
+
+
+		// 传入0 1 修改url,以及计算得到背景大小
+		function changeUrl(n) {
+			coverEl.css('background-image', 'url(./486142478_dc4dcb-000' + n + '.jpg)')
+			var size = pvideo.img_x_size * pvideo.img_x_len / (pvideo.img_x_size / $('.pic .preview').innerWidth()) / $(
+				'.pic .preview').innerWidth()
+			// 其实简化后,size就是mig_x_len
+			coverEl.css('background-size', pvideo.img_x_len * 100 + '%')
+		}
+		// 默认传入第一张
+		changeUrl(1)
+		// 传入是(x,y上第几张图片 - 1 )  因为第一张不用偏移,修改背景位置
+		function changePisition(x, y) {
+			// 图片相对cover向左向上移,所以应该是- +2 +1是因为前面多了一条缝隙
+			coverEl.css('background-position-x', -x * 160 + 2)
+			// 90是对比 160 /480的比例,与270拿到的
+			coverEl.css('background-position-y', -y * 90 + 1)
+		}
+
+		// 得到是所有图片的第几张图片
+		function getCurrent(mousePropor) {
+			var current = 0
+			for (let i = 0; i < pvideo.index.length; i++) {
+				// 如果index里面的时间/总时长 大于 鼠标位置比例 则说明 前一项符合条件, 应该展示前一项的图片
+				// 这样取不到最后一张图片
+				if (pvideo.index[i] / pvideo.duration > mousePropor) {
+					current = i - 1;
+					break;
+				}
+				// 如果到了最后一项,依然还是小于鼠标位置比例的话,则应该取最后一个图片
+				else if (i === pvideo.index.length - 1) {
+					current = i
+				}
+			}
+			return current
+		}
+		// 根据是所有图片的第几张图片,修改Url,拿到(x,y上第几张图片 -1)
+		function getXY(current) {
+			if (current > 100) {
+				changeUrl(2)
+				current -= 100
+			} else {
+				changeUrl(1)
+			}
+
+			var y = Math.floor((current - 1) / 10)
+			var x = (current - 1) % 10
+			return [x, y]
+		}
+		// 封装一下修改图片需要的几个操作
+		function changeImg(mousePropor) {
+			// 获得要显示的第几张图片
+			var current = getCurrent(mousePropor)
+			// console.log(mousePropor, current)
+			// 得到x ,y
+			var arrXY = getXY(current)
+			changePisition(arrXY[0], arrXY[1])
+		}
+		//封装一下要进入,或离开时,统一显示或隐藏的元素 
+		function changOpacity(that, o) {
+			$(that).find('.preview').css('opacity', o)
+			danmasEl.css('opacity', o)
+			$(that).find('.mask').css('opacity', o)
+			// 要隐藏封面时,推迟0.5s
+			if (o) {
+				setTimeout(function () {
+					$(that).find('.img').css('opacity', Number(!o))
+				}, 500)
+			}else{
+				$(that).find('.img').css('opacity', Number(!o))
+			}
+
+		}
+		// 修改时长时间文本
+		$('.pic .time').text(time)
+		// 绑定时长的事件
+		$('.pic').hover(function () {
+			$('.pic .time').css('opacity', 1)
+		}, function () {
+			$('.pic .time').css('opacity', 0)
+		})
+
+		$('.pic').mousemove(function () {
+			// 拿到鼠标占比
+			var mousePropor = event.layerX / $(this).innerWidth()
+			// 修改图片
+			changeImg(mousePropor)
+			// 修改进度条
+			processBar.css('width', processBar.parent().innerWidth() * mousePropor)
+
+		})
+
+		$('.pic').mouseleave(function () {
+			changOpacity(this, 0)
+			// 清除掉定时器
+			clearInterval(timer1)
+			clearInterval(timer2)
+			// 移除掉所有弹幕元素
+			danmasEl.children().remove()
+		})
+
+
+		$('.pic').mouseenter(function () {
+			changOpacity(this, 1)
+			// 记录已经展示的弹幕下标
+			var dmindex = 0
+			// 生成弹幕的定时器
+			timer1 = setInterval(function () {
+				// 创建弹幕元素
+				var tempdmEl = document.createElement('p')
+				tempdmEl.innerText = dm[dmindex++]
+				tempdmEl.classList.add('dm')
+				// 初始化好位置
+				tempdmEl.style.left = danmasEl.innerWidth() + 'px'
+
+				// 与上个弹幕相反,如果也没有上个弹幕,则默认第一行
+				if (danmasEl.children().last().css('top') === '12px') {
+					tempdmEl.style.top = 24 + 'px'
+				} else {
+					tempdmEl.style.top = 12 + 'px'
+				}
+
+				danmasEl[0].appendChild(tempdmEl)
+
+				// 如果弹幕已经全部生成,则关掉定时器
+				if (dmindex >= dm.length) {
+					clearInterval(timer1)
+				}
+			}, 1500)
+			// 移动弹幕的定时器
+			timer2 = setInterval(function () {
+				// 这里不知道为什么, 0 - 0.5 1-1.5速度时,移动不了
+				// 移动弹幕
+				danmasEl.children().each(function (index, el) {
+					if ($(this).text().length >= 14) {
+						this.style.left = (this.offsetLeft - 1.6) + 'px'
+					} else {
+						this.style.left = (this.offsetLeft - 0.6) + 'px'
+					}
+					// 如果弹幕整个都已经超出了坐标,则移除弹幕
+					if (this.offsetLeft < -this.clientWidth) {
+						danmasEl[0].removeChild(this)
+					}
+				})
+			}, 1000 / 60)
+		})
+	</script>
+</body>
+
+</html>

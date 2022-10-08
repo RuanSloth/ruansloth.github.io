@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=
+    , initial-scale=1.0"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+
+    <script>
+      var canvas = document.getElementById("canvas");
+      if (canvas.getContext) {
+        var context = canvas.getContext("2d");
+        var sun = new Image();
+        var sun = new Image();
+        var moon = new Image();
+        var earth = new Image();
+      }
+      function init() {
+        sun.src = "./太阳.png";
+        moon.src = "./月亮.png";
+        earth.src = "./earth.png";
+        // 当系统准备好重绘条件后才会调用绘制动画帧。一般每秒钟回调函数执行 60 次
+        // 浏览器中的回调函数执行次数通常与浏览器屏幕刷新次数相匹配。
+        // 运行在后台标签页或者隐藏在 里时，requestAnimationFrame()
+        // 方法会暂停调用以提升性能和电池寿命。
+        window.requestAnimationFrame(draw);
+      }
+      function draw() {
+        // 合成
+        // globalCompositeOperation修改绘制顺序,就是谁会在上层
+        // source-over 在现在之上绘制新图形
+        // source-in 只在画布重叠地方绘制,其他透明
+        // source-out 不与画布重叠地方绘制
+        // source-atop 现有画布内容重叠地方绘制
+        // destination-in 保持新图形和画布内容重叠部分 其他透明
+        // copy只显示新图形
+        // destination-over 在现有画布内容后面绘制新图形
+        // ....
+
+        // 在底下绘制新的
+        context.globalCompositeOperation = "destination-over";
+        // 清空画布,起初之前的内容
+        context.clearRect(0, 0, 500, 500);
+
+        context.fillStyle = "rgba(0,0,0,0.4)";
+        context.strokeStyle = "rgba(0,153,255,.4)";
+        // 保存初始状态
+        context.save();
+        // x,y轴移动
+        context.translate(250, 250);
+
+        //
+        var time = new Date();
+        // 分成60份,每秒走1份
+        var earthDeg =
+          ((2 * Math.PI) / 60) * time.getSeconds() +
+          ((2 * Math.PI) / 60000) * time.getMilliseconds();
+        //   不断改变地球的位置,相对于坐标250 250 
+        // 旋转是相对于圆心,即现在地球围绕250 250转
+        context.rotate(earthDeg);
+        // 移到 450,250 处
+        context.translate(200, 0);
+        context.drawImage(earth, -20, -20, 40, 40);
+
+        context.save(); // 第二次保存画布状态(坐标轴在地球)
+        var moonDeg =
+        // 1秒走 60°
+          ((2 * Math.PI) / 6) * time.getSeconds() +
+          ((2 * Math.PI) / 6000) * time.getMilliseconds();
+        //   围绕地球一直转
+        context.rotate(moonDeg);
+        // 移到450,290
+        context.translate(0, 40);
+        context.drawImage(moon, -7.5, -7.5, 15, 15);
+        // 现在栈顶是450,250 弹出,回退到250,250
+        context.restore(); 
+        // 回退到0 0
+        context.restore();
+
+        // // 画一个地球运行的轨迹
+        context.beginPath();
+        context.arc(250, 250, 200, 0, Math.PI * 2, false);
+        context.stroke();
+        // 画一个太阳
+        context.drawImage(sun, 0, 0, 500, 500);
+        window.requestAnimationFrame(draw);
+      }
+      init();
+    </script>
+  </body>
+</html>
