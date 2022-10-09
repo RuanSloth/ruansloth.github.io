@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="container"></div>
+
+    <style type="text/css">
+      html {
+        height: 100%;
+      }
+      body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      #container {
+        height: 100%;
+      }
+    </style>
+
+    <script
+      type="text/javascript"
+      src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=zURguTOZUXr0IB8Fck90gvZDrEYG6U0w"
+    ></script>
+
+    <script>
+        var map = new BMapGL.Map('container')
+        var point = new BMapGL.Point(113,23)
+        map.centerAndZoom(point,15)
+        map.enableScrollWheelZoom(true);
+        map.addEventListener('click', function(e) {
+          
+    alert('点击的经纬度：' + e.latlng.lng + ', ' + e.latlng.lat);
+    var mercator = map.lnglatToMercator(e.latlng.lng, e.latlng.lat);
+    alert('点的墨卡托坐标：' + mercator[0] + ', ' + mercator[1]);
+});
+
+// 移除事件监听 (参数是函数名)
+// map.removeEventListener('click', handleClick);
+    </script>
+</body>
+</html>

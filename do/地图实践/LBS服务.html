@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" placeholder="输入广州内你想找的地址">
+    <button id="btn">确定</button>
+    <div id="container"></div>
+
+    <style type="text/css">
+      html {
+        height: 100%;
+      }
+      body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      #container {
+        height: 100%;
+      }
+    </style>
+
+    <script
+      type="text/javascript"
+      src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=zURguTOZUXr0IB8Fck90gvZDrEYG6U0w"
+    ></script>
+
+    <script>
+
+        alert('你可以输入地址,或者点击地图')
+        document.getElementById('btn').addEventListener('click',function () {
+            var input = document.querySelector('input').value
+            // 获得地址解析器实例
+            var myGeo = new BMapGL.Geocoder()
+            // 定位成功的话
+            myGeo.getPoint(input,function (point) {
+                if(point){
+                    // 移动视角
+                    map.centerAndZoom(point,16)
+                    // 添加覆盖物
+                    map.addOverlay(new BMapGL.Marker(point,{title:input}))
+                }else{
+                    alert('抱歉,没有找到这个地址')
+                }
+            },'广州市')
+        })
+      // 创建地图实例
+      var map = new BMapGL.Map("container");
+      // 地图中心点
+      var point = new BMapGL.Point(112.98, 23.15);
+      // 地图级别
+      map.centerAndZoom(point, 14);
+
+      //开启鼠标滚轮缩放
+      map.enableScrollWheelZoom(true);
+
+
+      var geoc = new BMapGL.Geocoder()
+      map.addEventListener('click',function (e) {
+        var pt = e.latlng
+        // 逆解析地址
+        geoc.getLocation(pt,function(rs){
+            var addComp = rs.addressComponents
+            alert(addComp.province+','+addComp.city+',' +
+            addComp.street + ", " + addComp.streetNumber)
+        })
+      })
+    </script>
+  </body>
+</html>

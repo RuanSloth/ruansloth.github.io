@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="container"></div>
+
+    <style type="text/css">
+      html {
+        height: 100%;
+      }
+      body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      #container {
+        height: 100%;
+      }
+    </style>
+
+    <script
+      type="text/javascript"
+      src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=zURguTOZUXr0IB8Fck90gvZDrEYG6U0w"
+    ></script>
+
+    <script>
+      // 创建地图实例
+      var map = new BMapGL.Map("container", 
+      // 禁止倾斜旋转
+      // {
+      //   enableRotate: false,
+      //   enableTilt: false,
+      // }
+      );
+      // 地图中心点
+      var point = new BMapGL.Point(116, 40);
+      // 地图级别
+      map.centerAndZoom(point, 15);
+
+      //开启鼠标滚轮缩放
+      map.enableScrollWheelZoom(true);
+
+      // map.setHeading(64.5); //设置地图旋转角度
+      // map.setTilt(73); //设置地图的倾斜角度
+
+
+      // 添加控件(定位控件)
+        var 	locationControl = new BMapGL.LocationControl(
+        {anchor: BMAP_ANCHOR_TOP_LEFT,//在地图上的哪个位置
+          offset: new BMapGL.Size(100,200)//相对原本位置便宜x,y
+        }  
+        )
+        map.addControl(locationControl)
+    </script>
+  </body>
+</html>

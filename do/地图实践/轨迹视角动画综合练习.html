@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="container"></div>
+
+    <style type="text/css">
+      html {
+        height: 100%;
+      }
+      body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      #container {
+        height: 100%;
+      }
+    </style>
+<script type="text/javascript" src="//api.map.baidu.com/library/TrackAnimation/src/TrackAnimation_min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=zURguTOZUXr0IB8Fck90gvZDrEYG6U0w"
+    ></script>
+
+    <script>
+      var map = new BMapGL.Map("container");
+      var point = new BMapGL.Point(112.98, 23.15);
+      map.centerAndZoom(point, 15);
+      map.enableScrollWheelZoom(true);
+      var point = [];
+      alert('选取5个点查看轨迹')
+      map.addEventListener("click", function (e) {
+        alert('点击的经纬度：' + e.latlng.lng + ', ' + e.latlng.lat);
+        point.push(
+          new BMapGL.Point(e.latlng.lng, e.latlng.lat)
+        );
+
+        if (point.length === 5) {
+          alert('已经选了5个点,看看轨迹吧')
+          // 初始化轨迹
+          var pl = new BMapGL.Polyline(point);
+          var trackAni = new BMapGLLib.TrackAnimation(
+            map,
+            pl,
+            {
+              overallView: true, // 动画完成后自动调整视野到总览
+              tilt: 10, // 轨迹播放的角度，默认为55
+              duration: 5000, // 动画持续时长，默认为10000，单位ms
+              delay: 1000, // 动画开始的延迟，默认0，单位ms
+            }
+          );
+          // 启动动画
+          trackAni.start();
+        }
+      });
+    </script>
+  </body>
+</html>
