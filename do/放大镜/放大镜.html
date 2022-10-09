@@ -1,119 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
     <title>Document</title>
     <style>
-        .thumb{
-            width: 200px;
-            height: 200px;
-            position: relative;
-            margin-bottom: 20px;
-            float: left;
-        }
-        .thumb img{
-            width: 100%;
-            display: block;
-        }
-        .thumb .mask{
-            width: 100px;
-            height: 100px;
-            background-color: rgba(0, 0, 255, 0.5);
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: none;
-            /* 鼠标穿透,就是防止鼠标放在上面时,导致无法触发thumb的
+      .thumb {
+        width: 200px;
+        height: 200px;
+        position: relative;
+        margin-bottom: 20px;
+        float: left;
+      }
+      .thumb img {
+        width: 100%;
+        display: block;
+      }
+      .thumb .mask {
+        width: 100px;
+        height: 100px;
+        background-color: rgba(0, 0, 255, 0.5);
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        /* 鼠标穿透,就是防止鼠标放在上面时,导致无法触发thumb的
                 鼠标移动事件 ,这会导致mask来回闪烁*/
-            pointer-events: none;
-        }
-        .zoom{
-            float: left;
-            width: 200px;
-            height: 200px;
-            margin-left: 100px;
-            overflow: hidden;
-            display: none;
-        }
-        .zoom img{
-            width: 200%;
-            position: relative;
-            top: 0;
-            left: 0;
-            display: block;
-        }
+        pointer-events: none;
+      }
+      .zoom {
+        float: left;
+        width: 200px;
+        height: 200px;
+        margin-left: 100px;
+        overflow: hidden;
+        display: none;
+      }
+      .zoom img {
+        width: 200%;
+        position: relative;
+        top: 0;
+        left: 0;
+        display: block;
+      }
     </style>
-</head>
-<body>
-    <div class="back"><a href="../../index.html" style="display: block ;line-height: 25px; text-decoration: none;">返回</a></div>
+  </head>
+  <body>
+    <div class="back">
+      <a
+        href="../../index.html"
+        style="
+          display: block;
+          line-height: 25px;
+          text-decoration: none;
+        "
+        >返回</a
+      >
+    </div>
     <style>
-        .back{
-            width: 50px;
-            height: 25px;
-            position: absolute;
-            top: 400px;
-            border: 1px solid;
-            border-radius: 10px;
-            text-align: center;
-            line-height: 25px;
-            left: 20px;
-            background-color: antiquewhite;
-        }
+      .back {
+        width: 50px;
+        height: 25px;
+        position: absolute;
+        top: 400px;
+        border: 1px solid;
+        border-radius: 10px;
+        text-align: center;
+        line-height: 25px;
+        left: 20px;
+        background-color: antiquewhite;
+      }
     </style>
     <div class="thumb">
-        <img src="./1.jpg" alt="">
-        <div class="mask"></div>
+      <img src="./1.jpg" alt="" />
+      <div class="mask"></div>
     </div>
     <div class="zoom">
-        <img src="./1.jpg" alt="">
+      <img src="./1.jpg" alt="" />
     </div>
     <script>
-        var thumbEl = document.getElementsByClassName('thumb')[0]
-        var zoomEl = document.getElementsByClassName('zoom')[0]
-        var zoomImgEl = zoomEl.getElementsByTagName('img')[0]
-        var maskEl = thumbEl.getElementsByClassName('mask')[0]
-        thumbEl.onmousemove = Move
-        thumbEl.onmouseenter = function () {
-            console.log(111);
-            maskEl.style.display = "block"
-            zoomEl.style.display = "block"
-        }
-        thumbEl.onmouseout = function () {
-            maskEl.style.display = "none"
-            zoomEl.style.display = "none"
-        }
-        function Move(e) {
+      var thumbEl =
+        document.getElementsByClassName("thumb")[0];
+      var zoomEl =
+        document.getElementsByClassName("zoom")[0];
+      var zoomImgEl = zoomEl.getElementsByTagName("img")[0];
+      var maskEl =
+        thumbEl.getElementsByClassName("mask")[0];
+      thumbEl.onmousemove = Move;
+      thumbEl.onmouseenter = function () {
+        console.log(111);
+        maskEl.style.display = "block";
+        zoomEl.style.display = "block";
+      };
+      thumbEl.onmouseout = function () {
+        maskEl.style.display = "none";
+        zoomEl.style.display = "none";
+      };
+      function Move(e) {
         // 遮罩层位置
         // 遮罩层跟着鼠标走,
         // 这里遮罩层的位置与鼠标在thumb里面的坐标有关
         // 当遮罩层在鼠标下面时,需要设置鼠标事件穿透,不然来回闪烁
         // 因为在鼠标底下的时候,鼠标不在thumb里面,所以offsetX,y为0
-        
-         var x = e.offsetX - 100 /2
-         var y = e.offsetY - 100 /2
 
-        if(x < 0)
-            x = 0 
-        if(x > 100)
-            x = 100
-        if(y <0 )
-            y = 0
-        if(y > 100)
-            y = 100
-        maskEl.style.left = x + 'px'
-        maskEl.style.top = y + 'px'
-       
+        var x = e.offsetX - 100 / 2;
+        var y = e.offsetY - 100 / 2;
+
+        if (x < 0) x = 0;
+        if (x > 100) x = 100;
+        if (y < 0) y = 0;
+        if (y > 100) y = 100;
+        maskEl.style.left = x + "px";
+        maskEl.style.top = y + "px";
+
         // 放大区域的图片跟着遮罩层走
         // 遮罩层往右,相对的照片就是往左方向,因此得加-
-        zoomImgEl.style.left = - 2 * x + 'px'
-        zoomImgEl.style.top = -2 *  y + 'px'
+        zoomImgEl.style.left = -2 * x + "px";
+        zoomImgEl.style.top = -2 * y + "px";
 
-        
         // 总结思路: zoom就相当于mask,zoom的背景图,或者里面超出隐藏的图片即为thumb
         // 因此在计算zoom图片移动范围时,需要*mask 和thumb之间的比例
-        }
+      }
     </script>
-</body>
+  </body>
 </html>
